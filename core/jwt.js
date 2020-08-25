@@ -35,32 +35,52 @@ class JWTHandler {
     this._fetchPublicKeyR();
   }
 
+  _isHeroku() {
+    return process.env.HOSTED_AT === "heroku";
+  }
+
   _fetchPrivateKeyA() {
-    this._privateKey = fs.readFileSync(
-      path.join(__dirname, _privateKeyPath),
-      FILE_ENCODING_UTF8
-    );
+    if (this._isHeroku()) {
+      this._privateKey = process.env.A_PRIVATE_KEY;
+    } else {
+      this._privateKey = fs.readFileSync(
+        path.join(__dirname, _privateKeyPath),
+        FILE_ENCODING_UTF8
+      );
+    }
   }
 
   _fetchPublicKeyA() {
-    this._publicKey = fs.readFileSync(
-      path.join(__dirname, _publicKeyPath),
-      FILE_ENCODING_UTF8
-    );
+    if (this._isHeroku()) {
+      this._publicKey = process.env.A_PUBLIC_KEY;
+    } else {
+      this._publicKey = fs.readFileSync(
+        path.join(__dirname, _publicKeyPath),
+        FILE_ENCODING_UTF8
+      );
+    }
   }
 
   _fetchPrivateKeyR() {
-    this._RprivateKey = fs.readFileSync(
-      path.join(__dirname, _privateRefreshKeyPath),
-      FILE_ENCODING_UTF8
-    );
+    if (this._isHeroku()) {
+      this._RprivateKey = process.env.R_PRIVATE_KEY;
+    } else {
+      this._RprivateKey = fs.readFileSync(
+        path.join(__dirname, _privateRefreshKeyPath),
+        FILE_ENCODING_UTF8
+      );
+    }
   }
 
   _fetchPublicKeyR() {
-    this._RpublicKey = fs.readFileSync(
-      path.join(__dirname, _publicRefreshKeyPath),
-      FILE_ENCODING_UTF8
-    );
+    if (this._isHeroku()) {
+      this._RpublicKey = process.env.R_PUBLIC_KEY;
+    } else {
+      this._RpublicKey = fs.readFileSync(
+        path.join(__dirname, _publicRefreshKeyPath),
+        FILE_ENCODING_UTF8
+      );
+    }
   }
 
   // Creates an accessToken storing the email as payload
