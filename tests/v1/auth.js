@@ -43,10 +43,11 @@ module.exports = (chai, server) => {
     it("should not login as user is not existing", (done) => {
       chai
         .request(server)
-        .patch(baseUrl + "/login")
+        .post(baseUrl + "/login")
         .set("Content-Type", "application/json")
         .send(data)
         .end((err, response) => {
+          console.log(response.body);
           response.should.not.have.status(200);
           response.should.not.have.header(ACCESS_TOKEN);
           response.should.not.have.header(REFRESH_TOKEN);

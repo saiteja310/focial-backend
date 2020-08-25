@@ -1,4 +1,4 @@
-name: Mocha-Tests
+name: Test-and-deploy
 
 on:
   pull_request:
@@ -53,5 +53,16 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      #    - run: npm run build --if-present
       - run: npm test
+
+      - name: Delete local .env file and create file with server values
+        run: |
+          rm .env
+          touch .env
+          echo "${{ SECRETS.ENV_VARS }}" >> .env
+
+      - uses: akhileshns/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_APP_NAME}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}

@@ -66,6 +66,10 @@ function _setRoutes(app) {
   // auth middleware
   app.use("/api/v1/admin/auth", adminAuthRoute);
 
+  app.use("/", (req, res) => {
+    res.status(200).send("<center><h2>Coming soon</h2></center>");
+  });
+
   _handleInvalidRoutes(app);
 }
 
