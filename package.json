@@ -1,7 +1,7 @@
 {
-  "name": "node-rest-api-starter",
-  "version": "1.0.0",
-  "description": "Template for node.js REST API (includes auth)",
+  "name": "focial-backend",
+  "version": "0.0.1",
+  "description": "Node.js API for focial app with MongoDB, JWT, Express.js",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
@@ -12,15 +12,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fayaz07/node-rest-api-auth.git"
+    "url": "git+https://github.com/stackinflow/focial-backend.git"
   },
   "keywords": [],
-  "author": "Mohammad Fayaz(@fayaz07)",
+  "author": "Stackinflow(@stackinflow)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/fayaz07/node-rest-api-auth/issues"
+    "url": "https://github.com/stackinflow/focial-backend/issues"
   },
-  "homepage": "https://github.com/fayaz07/node-rest-api-auth#readme",
+  "homepage": "https://github.com/stackinflow/focial-backend#readme",
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

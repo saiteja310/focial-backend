@@ -1,5 +1,6 @@
 const {
   registerValidation,
+  loginValidation,
   emailValidation,
   resetPasswordValidation,
 } = require("../utils/validators");
@@ -37,6 +38,18 @@ const {
 */
 module.exports.validateRegisterFields = (req, res, next) => {
   const { error } = registerValidation(req.body);
+  if (error)
+    return res.status(400).json({
+      status: FAILED,
+      message: error.details[0].message,
+      error: error,
+    });
+
+  next();
+};
+
+module.exports.validateLoginFields = (req, res, next) => {
+  const { error } = loginValidation(req.body);
   if (error)
     return res.status(400).json({
       status: FAILED,

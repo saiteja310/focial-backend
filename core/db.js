@@ -25,9 +25,9 @@ function _getConnectionString(env) {
   // for remote host: mongodb+srv://<username>:<password>@host/db-name
   // atlas clusters will not provide a port or connect to default port 27017
   if (env.db.username === "" || env.db.password === "") {
-    return `${MONGODB}+srv://${env.db.host}/${env.db.name}`;
+    return `${MONGODB}+srv://${env.db.host}/${env.db.name}?retryWrites=true&w=majority`;
   }
-  return `${MONGODB}+srv://${env.db.username}:${env.db.password}@${env.db.host}/${env.db.name}`;
+  return `${MONGODB}+srv://${env.db.username}:${env.db.password}@${env.db.host}/${env.db.name}?retryWrites=true&w=majority`;
 }
 
 module.exports.connectToDB = (appConfig) => {
@@ -50,7 +50,9 @@ module.exports.connectToDB = (appConfig) => {
         process.exit(1);
       } else {
         // connection is successful prints out which db is connected to
-        console.log(`Connected to db ${appConfig.db.name} successfully`);
+        console.log(
+          `Connected to db ${appConfig.db.name} successfully at ${appConfig.db.host}`
+        );
       }
     }
   );

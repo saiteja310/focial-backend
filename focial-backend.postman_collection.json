@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "93be77bd-28f5-4d79-8623-c5c186e4f5c5",
-		"name": "node-rest-api-auth",
+		"_postman_id": "53c59a23-bec9-4990-86a6-c453f937abb1",
+		"name": "focial-backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -23,11 +23,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/register",
+							"raw": "{{url}}/api/v1/auth/register",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -53,11 +52,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/login",
+							"raw": "{{url}}/api/v1/auth/login",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -74,12 +72,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:6000/api/v1/auth/token/verify?t=b8725071c46a9f0af208693caf135a177def7c2d77b702720a38eeab3bd6fc79d95e90e3e1be0fdd12bf20a8e345525812a0a75d50545e93c78c1908d7f733f1",
-							"protocol": "http",
+							"raw": "{{url}}/api/v1/auth/token/verify?t=b8725071c46a9f0af208693caf135a177def7c2d77b702720a38eeab3bd6fc79d95e90e3e1be0fdd12bf20a8e345525812a0a75d50545e93c78c1908d7f733f1",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -112,11 +108,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/token/resend",
+							"raw": "{{url}}/api/v1/auth/token/resend",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -149,11 +144,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/password",
+							"raw": "{{url}}/api/v1/auth/password",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -179,11 +173,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/password/reset/code",
+							"raw": "{{url}}/api/v1/auth/password/reset/code",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -211,11 +204,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/password/reset/code/resend",
+							"raw": "{{url}}/api/v1/auth/password/reset/code/resend",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -244,11 +236,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/password/reset/",
+							"raw": "{{url}}/api/v1/auth/password/reset/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -273,11 +264,10 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/token",
+							"raw": "{{url}}/api/v1/auth/token",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -310,11 +300,10 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/",
+							"raw": "{{url}}/api/v1/auth/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -340,11 +329,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/facebook",
+							"raw": "{{url}}/api/v1/auth/facebook",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -370,11 +358,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/auth/google",
+							"raw": "{{url}}/api/v1/auth/google",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -406,11 +393,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/admin/auth/login",
+							"raw": "{{url}}/api/v1/admin/auth/login",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -437,11 +423,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/admin/auth/register",
+							"raw": "{{url}}/api/v1/admin/auth/register",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -469,11 +454,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:6000/api/v1/admin/auth/users",
+							"raw": "{{url}}/api/v1/admin/auth/users",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -501,11 +485,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:6000/api/v1/admin/auth/admins",
+							"raw": "{{url}}/api/v1/admin/auth/admins",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -542,11 +525,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/admin/auth/user/disable",
+							"raw": "{{url}}/api/v1/admin/auth/user/disable",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -584,11 +566,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/admin/auth/user/enable",
+							"raw": "{{url}}/api/v1/admin/auth/user/enable",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -630,11 +611,10 @@
 							}
 						],
 						"url": {
-							"raw": "localhost:6000/api/v1/user/",
+							"raw": "{{url}}/api/v1/user/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
@@ -662,7 +642,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"gender\":\"Female\",\n    \"age\": 25,\n    \"locatin\":\"Nizamabad\"\n}",
+							"raw": "{\n    \"gender\":\"Female\",\n    \"age\": 25,\n    \"location\":\"Nizamabad\",\n    \"_id\":\"asdfasdf\",\n    \"email\":\"changetest@gmail.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -670,11 +650,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:6000/api/v1/user/",
+							"raw": "{{url}}/api/v1/user/",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "6000",
 							"path": [
 								"api",
 								"v1",
