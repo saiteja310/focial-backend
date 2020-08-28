@@ -111,6 +111,8 @@ module.exports.registerWithEmail = async (req, res, registerAsAdmin) => {
   await newAuthUser.save(async (error, savedUser) => {
     if (savedUser) {
       await sendVerificationMail(savedUser._id, savedUser.email);
+      savedUser.firstName = req.body.name.toString().split(" ")[0];
+      savedUser.lastName = req.body.name.toString().split(" ")[1];
       await _createUserDocument(savedUser);
       return res.status(201).json({
         status: SUCCESS,

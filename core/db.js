@@ -50,7 +50,9 @@ module.exports.connectToDB = (appConfig) => {
         process.exit(1);
       } else {
         // connection is successful prints out which db is connected to
-        console.log(`Connected to db ${appConfig.db.name} successfully`);
+        console.log(
+          `Connected to db ${appConfig.db.name} successfully at ${appConfig.db.host}`
+        );
       }
     }
   );
