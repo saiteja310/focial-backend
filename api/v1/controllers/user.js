@@ -4,7 +4,6 @@ const {
   USER_NOT_EXISTS,
   USER_DATA_UPDATE_FAILED,
 } = require("../utils/constants").errors;
-
 const {
   SUCCESS,
   FETCHED_USER_DATA,
@@ -65,6 +64,50 @@ module.exports.updateUser = async (req, res) => {
 
 module.exports.deleteUser = async (email) => {
   await User.deleteOne({ email: email });
+};
+
+module.exports.uploadProfilePicture = async (req, res) => {
+  await User.updateOne(
+    { email: req.tokenData.email },
+    { $set: { photoUrl: "uploads/pps/" + req.file.filename } }
+  )
+    .then((saved) => {
+      console.log(saved);
+      return res.status(200).json({
+        status: SUCCESS,
+        message: "Profile picture uploaded",
+        photoUrl: "uploads/pps/" + req.file.filename,
+      });
+    })
+    .catch((err) => {
+      return res.status(200).json({
+        status: FAILED,
+        message: "Profile picture upload failed",
+        error: err,
+      });
+    });
+};
+
+module.exports.uploadCoverPicture = async (req, res) => {
+  await User.updateOne(
+    { email: req.tokenData.email },
+    { $set: { coverPic: "uploads/cover/" + req.file.filename } }
+  )
+    .then((saved) => {
+      console.log(saved);
+      return res.status(200).json({
+        status: SUCCESS,
+        message: "Cover picture uploaded",
+        photoUrl: "uploads/cover/" + req.file.filename,
+      });
+    })
+    .catch((err) => {
+      return res.status(200).json({
+        status: FAILED,
+        message: "Cover picture upload failed",
+        error: err,
+      });
+    });
 };
 
 function _updateUserModel(userData, updated) {

@@ -17,15 +17,14 @@ const userSchema = new mongoose.Schema(
     lastName: String,
     gender: String,
     age: Number,
-    knownLanguages: {
-      type: String,
-    },
+    bio: String,
+    knownLanguages: Array,
     profession: String,
     location: Object,
     latitude: Number,
     longitude: Number,
     photoUrl: String,
-    symptoms: String,
+    coverPic: String,
   },
   {
     timestamps: true,
