@@ -161,7 +161,7 @@ function _isAllowed(key) {
   return !_immutableFields.includes(key);
 }
 
-async function fetchNameOfUser(email) {
+module.exports.fetchNameOfUser = async function (email) {
   await User.findOne({ email: email }, { firstName: 1, lastName: 1 })
     .then((document) => {
       if (!document) {
@@ -173,4 +173,4 @@ async function fetchNameOfUser(email) {
       console.log(err);
       return " ";
     });
-}
+};
