@@ -20,6 +20,7 @@ const SuccessMessages = Object.freeze({
   TOKENS_REFRESHED: "Tokens have been refreshed",
   FETCHED_USER_DATA: "Fetched user data",
   UPDATED_USER_DATA: "Updated user data",
+  USERNAME_AVAILABLE: "Username available",
 });
 
 const errorMessages = Object.freeze({
@@ -78,6 +79,8 @@ const errorMessages = Object.freeze({
     "password must contain at least one special character",
   USER_DATA_UPDATE_FAILED: "Failed to update user data",
   INTERNAL_SERVER_ERROR: "Internal server error",
+  INVALID_USERNAME: "Invalid username",
+  USERNAME_IN_USE: "Username taken",
 });
 
 const HEADERS_URLS = Object.freeze({

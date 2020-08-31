@@ -5,12 +5,14 @@ const {
   validateAccessToken,
   checkAccessToken,
   checkUserAccess,
+  checkUsername,
 } = require("../middlewares/auth");
 const {
   getUser,
   updateUser,
   uploadProfilePicture,
   uploadCoverPicture,
+  checkUsernameAvailability,
 } = require("../controllers/user");
 const multer = require("multer");
 const ppStorage = multer.diskStorage({
@@ -94,6 +96,21 @@ router.post(
   async (req, res) => {
     try {
       await uploadCoverPicture(req, res);
+    } catch (error) {
+      internalServerError(res, error);
+    }
+  }
+);
+
+router.get(
+  "/check/:username",
+  checkAccessToken,
+  validateAccessToken,
+  checkUserAccess,
+  checkUsername,
+  async (req, res) => {
+    try {
+      await checkUsernameAvailability(req, res);
     } catch (error) {
       internalServerError(res, error);
     }

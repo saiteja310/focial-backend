@@ -18,8 +18,11 @@ const userSchema = new mongoose.Schema(
     gender: String,
     age: Number,
     bio: String,
-    knownLanguages: Array,
-    profession: String,
+    phone: String,
+    username: {
+      type: String,
+      unique: true,
+    },
     location: Object,
     latitude: Number,
     longitude: Number,

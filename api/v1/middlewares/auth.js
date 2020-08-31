@@ -29,6 +29,7 @@ const {
   PASSWORD_DOES_NOT_CONTAIN_LOWERCASE,
   PASSWORD_DOES_NOT_CONTAIN_UPPERCASE,
   PASSWORD_DOES_NOT_CONTAIN_SPECIAL_CHAR,
+  INVALID_USERNAME,
 } = require("../utils/constants").errors;
 
 /* register fields validation middleware
@@ -297,6 +298,19 @@ module.exports.checkOAuthAccessToken = async (req, res, next) => {
     return res.status(400).json({
       status: FAILED,
       message: INVALID_TOKEN,
+    });
+  next();
+};
+
+/*
+  username check
+*/
+module.exports.checkUsername = async (req, res, next) => {
+  const re = /^[a-z][a-z0-9_]{3,10}/;
+  if (!re.test(req.params.username))
+    return res.status(400).json({
+      status: FAILED,
+      message: INVALID_USERNAME,
     });
   next();
 };
