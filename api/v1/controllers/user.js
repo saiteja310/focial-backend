@@ -17,7 +17,10 @@ module.exports.createUser = async (userData) => {
   var user = new User({
     userId: userData._id,
     email: userData.email,
-    username: userData.firstName + "_" + crypto.randomBytes(2).toString("hex"),
+    username:
+      userData.firstName.toString().toLowerCase() +
+      "_" +
+      crypto.randomBytes(2).toString("hex"),
     firstName: userData.firstName,
     lastName: userData.lastName,
     photoUrl: userData.photoUrl,
