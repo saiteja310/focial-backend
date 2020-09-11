@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const {
   validateRegisterFields,
+  validateLoginFields,
   validPassword,
   validPasswords,
   validEmail,
@@ -11,7 +12,6 @@ const {
   checkAccessToken,
   checkUserAccess,
   checkOAuthAccessToken,
-  validateLoginFields,
 } = require("../middlewares/auth");
 const {
   registerWithEmail,

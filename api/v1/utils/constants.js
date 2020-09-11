@@ -111,6 +111,7 @@ const collections = Object({
   AUTH_COLLECTION: "auth",
   TOKEN_COLLECTION: "token",
   USER_COLLECTION: "user",
+  STORY_COLLECTION: "story",
 });
 
 module.exports = Object.freeze({

@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema(
     longitude: Number,
     photoUrl: String,
     coverPic: String,
+    followers: {
+      type: Array,
+      default: [],
+    },
+    following: {
+      type: Array,
+      default: [],
+    },
   },
   {
     timestamps: true,

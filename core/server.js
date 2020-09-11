@@ -8,6 +8,7 @@ const path = require("path");
 // importing user routes
 const authRoute = require("../api/v1/routes/auth");
 const userRoute = require("../api/v1/routes/user");
+const storyRoute = require("../api/v1/routes/story");
 
 // importing admin routes
 const adminAuthRoute = require("../api/v1/routes/admin/auth");
@@ -61,10 +62,20 @@ function _setRoutes(app) {
   app.use("/api/v1/auth", authRoute);
   //  user middleware
   app.use("/api/v1/user", userRoute);
+  //  user middleware
+  app.use("/api/v1/story", storyRoute);
 
   // admin routes
   // auth middleware
   app.use("/api/v1/admin/auth", adminAuthRoute);
+
+  app.use("/dl", (req, res) => {
+    res
+      .status(200)
+      .send(
+        "<center><a href=https://focial.co><h2>Coming soon</h2></a></center>"
+      );
+  });
 
   app.use("/", (req, res) => {
     res.status(200).send("<center><h2>Coming soon</h2></center>");
