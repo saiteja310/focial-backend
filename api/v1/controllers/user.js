@@ -30,7 +30,7 @@ module.exports.createUser = async (userData) => {
 
 module.exports.getUser = async (req, res) => {
   await User.findOne(
-    { email: req.tokenData.email },
+    { userId: req.tokenData.authId },
     { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 }
   )
     .then((document) => {
@@ -57,7 +57,7 @@ module.exports.getUser = async (req, res) => {
 
 module.exports.updateUser = async (req, res) => {
   var user = await User.findOne(
-    { email: req.tokenData.email },
+    { userId: req.tokenData.authId },
     { createdAt: 0, updatedAt: 0, __v: 0 }
   );
   user = _updateUserModel(user, req.body);
@@ -75,13 +75,13 @@ module.exports.updateUser = async (req, res) => {
   });
 };
 
-module.exports.deleteUser = async (email) => {
-  await User.deleteOne({ email: email });
+module.exports.deleteUser = async (authId) => {
+  await User.deleteOne({ userId: authId });
 };
 
 module.exports.uploadProfilePicture = async (req, res) => {
   await User.updateOne(
-    { email: req.tokenData.email },
+    { userId: req.tokenData.authId },
     { $set: { photoUrl: "uploads/pps/" + req.file.filename } }
   )
     .then((saved) => {
@@ -103,7 +103,7 @@ module.exports.uploadProfilePicture = async (req, res) => {
 
 module.exports.uploadCoverPicture = async (req, res) => {
   await User.updateOne(
-    { email: req.tokenData.email },
+    { userId: req.tokenData.authId },
     { $set: { coverPic: "uploads/cover/" + req.file.filename } }
   )
     .then((saved) => {
@@ -176,4 +176,8 @@ module.exports.fetchNameOfUser = async function (email) {
       console.log(err);
       return " ";
     });
+};
+
+module.exports.getFollowingList = async (authId) => {
+  return await User.findOne({ userId: authId }, { following: 1, userId: 1 });
 };
