@@ -21,6 +21,7 @@ const SuccessMessages = Object.freeze({
   FETCHED_USER_DATA: "Fetched user data",
   UPDATED_USER_DATA: "Updated user data",
   USERNAME_AVAILABLE: "Username available",
+  RESENT_VERIFY_EMAIL: "Verification token has been resent to your email",
 });
 
 const errorMessages = Object.freeze({
@@ -39,7 +40,6 @@ const errorMessages = Object.freeze({
   INVALID_EXPIRED_VERIFY_TOKEN: "Verification token expired/invalid",
   UNABLE_TO_VERIFY: "Failed to verify your account",
   ACCOUNT_ALREADY_VERIFIED: "Account already verified",
-  RESENT_VERIFY_EMAIL: "Verification token has been resent to your email",
   OLD_PASSWORD_IS_SAME: "Old password can not be new password",
   PASSWORD_CHANGE_FAILED: "Failed to change your password",
   INVALID_EXPIRED_OTP: "OTP is invalid/expired, please request for new OTP",
@@ -112,6 +112,7 @@ const collections = Object({
   TOKEN_COLLECTION: "token",
   USER_COLLECTION: "user",
   STORY_COLLECTION: "story",
+  POST_COLLECTION: "post",
 });
 
 module.exports = Object.freeze({
