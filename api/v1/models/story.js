@@ -8,7 +8,10 @@ const tokenSchema = new mongoose.Schema({
     1 - Image
     2 - Video
   **/
-  type: Number,
+  type: {
+    type: Number,
+    required: true,
+  },
   text: String,
   textStyle: Number,
   gradient: Number,

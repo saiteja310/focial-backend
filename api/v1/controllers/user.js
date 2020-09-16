@@ -27,12 +27,62 @@ module.exports.createUser = async (userData) => {
   });
   await user.save();
 };
+const mongoose = require("mongoose");
 
 module.exports.getUser = async (req, res) => {
-  await User.findOne(
-    { userId: req.tokenData.authId },
-    { _id: 0, createdAt: 0, updatedAt: 0, __v: 0 }
-  )
+  console.log(req.tokenData.authId);
+
+  await User.aggregate([
+    {
+      $match: {
+        userId: mongoose.Types.ObjectId(req.tokenData.authId.toString()),
+      },
+    },
+    {
+      $lookup: {
+        from: "posts",
+        localField: "userId",
+        foreignField: "userId",
+        as: "posts",
+      },
+    },
+    {
+      $addFields: {
+        posts: { $size: "$posts" },
+      },
+    },
+    {
+      $project: {
+        posts: 1,
+        _id: 0,
+        userId: 1,
+        email: 1,
+        username: 1,
+        firstName: 1,
+        lastName: 1,
+        gender: 1,
+        age: 1,
+        bio: 1,
+        phone: 1,
+        photoUrl: 1,
+        coverPic: 1,
+        following: {
+          $cond: {
+            if: { $isArray: "$following" },
+            then: { $size: "$following" },
+            else: 0,
+          },
+        },
+        followers: {
+          $cond: {
+            if: { $isArray: "$followers" },
+            then: { $size: "$followers" },
+            else: 0,
+          },
+        },
+      },
+    },
+  ])
     .then((document) => {
       if (!document) {
         return res.status(403).json({
@@ -43,7 +93,7 @@ module.exports.getUser = async (req, res) => {
       return res.status(200).json({
         status: SUCCESS,
         message: FETCHED_USER_DATA,
-        user: document,
+        user: document[0],
       });
     })
     .catch((err) => {
