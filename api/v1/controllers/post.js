@@ -128,3 +128,41 @@ module.exports.uploadPostImage = async (req, res) => {
     url: "uploads/posts/" + req.file.filename,
   });
 };
+
+module.exports.likePost = async (req, res) => {
+  await Post.update(
+    { _id: req.body.postId },
+    { $addToSet: { likes: req.tokenData.authId } },
+    (err, updated) => {
+      if (err)
+        return res.status(403).json({
+          status: FAILED,
+          message: "failed to post like",
+        });
+      console.log(updated);
+      return res.status(200).json({
+        status: SUCCESS,
+        message: "Post liked successfully",
+      });
+    }
+  );
+};
+
+module.exports.dislikePost = async (req, res) => {
+  await Post.update(
+    { _id: req.body.postId },
+    { $pull: { likes: req.tokenData.authId } },
+    (err, updated) => {
+      if (err)
+        return res.status(403).json({
+          status: FAILED,
+          message: "failed to remove like",
+        });
+      console.log(updated);
+      return res.status(200).json({
+        status: SUCCESS,
+        message: "Post disliked successfully",
+      });
+    }
+  );
+};
