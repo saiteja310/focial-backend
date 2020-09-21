@@ -2,7 +2,6 @@ const Post = require("../models/post");
 const { SUCCESS } = require("../utils/constants").successMessages;
 const { FAILED } = require("../utils/constants").errors;
 const { getFollowingList } = require("../controllers/user");
-const { mongo } = require("mongoose");
 
 module.exports.newPost = async (req, res) => {
   if (!req.body.caption)

@@ -116,6 +116,7 @@ const collections = Object({
   USER_COLLECTION: "user",
   STORY_COLLECTION: "story",
   POST_COLLECTION: "post",
+  COMMENT_COLLECTION: "comment",
 });
 
 module.exports = Object.freeze({
