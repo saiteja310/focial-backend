@@ -13,6 +13,7 @@ const {
   uploadProfilePicture,
   uploadCoverPicture,
   checkUsernameAvailability,
+  getSuggestions,
 } = require("../controllers/user");
 const multer = require("multer");
 const ppStorage = multer.diskStorage({
@@ -111,6 +112,20 @@ router.get(
   async (req, res) => {
     try {
       await checkUsernameAvailability(req, res);
+    } catch (error) {
+      internalServerError(res, error);
+    }
+  }
+);
+
+router.get(
+  "/suggestions",
+  checkAccessToken,
+  validateAccessToken,
+  checkUserAccess,
+  async (req, res) => {
+    try {
+      await getSuggestions(req, res);
     } catch (error) {
       internalServerError(res, error);
     }

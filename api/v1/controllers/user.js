@@ -233,3 +233,18 @@ module.exports.fetchNameOfUser = async function (authId) {
 module.exports.getFollowingList = async (authId) => {
   return await User.findOne({ userId: authId }, { following: 1, userId: 1 });
 };
+
+module.exports.getSuggestions = async (req, res) => {
+  const suggestions = await User.find(
+    { userId: { $ne: mongoose.Types.ObjectId(req.tokenData.authId) } },
+    { username: 1, photoUrl: 1, firstName: 1, lastName: 1, userId: 1, _id: 0 }
+  )
+    .sort({ createdAt: -1 })
+    .limit(10);
+
+  return res.status(200).json({
+    status: SUCCESS,
+    message: "Fetched friend suggestions",
+    suggestions: suggestions,
+  });
+};
