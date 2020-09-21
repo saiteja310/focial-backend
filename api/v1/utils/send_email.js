@@ -25,7 +25,7 @@ class Email {
       html: mailOptions.html,
     };
     // console.log(mailOptions.html);
-    console.log("sending email");
+    // console.log("sending email");
     if (process.env.NODE_ENV === "test")
       console.log("mails will not be sent in test env");
     // ES6
@@ -35,7 +35,7 @@ class Email {
           console.log("Email sent");
         },
         (error) => {
-          console.error(error);
+          // console.error(error);
           if (error.response) {
             console.error(error.response.body);
           }

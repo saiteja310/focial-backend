@@ -214,18 +214,20 @@ function _isAllowed(key) {
   return !_immutableFields.includes(key);
 }
 
-module.exports.fetchNameOfUser = async function (email) {
-  await User.findOne({ email: email }, { firstName: 1, lastName: 1 })
-    .then((document) => {
-      if (!document) {
-        return " ";
+module.exports.fetchNameOfUser = async function (authId) {
+  var username = " ";
+  await User.findOne(
+    { userId: authId },
+    { firstName: 1, lastName: 1 },
+    (error, document) => {
+      if (error) {
+        console.log(error);
+      } else {
+        username = document.firstName + " " + document.lastName;
       }
-      return document.firstName + " " + document.lastName;
-    })
-    .catch((err) => {
-      console.log(err);
-      return " ";
-    });
+    }
+  );
+  return username;
 };
 
 module.exports.getFollowingList = async (authId) => {
