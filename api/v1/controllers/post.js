@@ -1,6 +1,7 @@
 const Post = require("../models/post");
 const { SUCCESS } = require("../utils/constants").successMessages;
 const { FAILED } = require("../utils/constants").errors;
+const { getFollowingList } = require("../controllers/user");
 
 module.exports.newPost = async (req, res) => {
   if (!req.body.caption)
@@ -43,12 +44,76 @@ async function _newPost(req, res, type) {
 }
 
 module.exports.getMyPosts = async (req, res) => {
-  const posts = await Post.find(
+  var user = await getFollowingList(req.tokenData.authId);
+  // console.log(user.following);
+  user.following.push(user.userId);
+  // user.following.push(mongoose.Types.ObjectId("5f6375994cd42e71f1903702"));
+  /* const posts = await Post.find(
     { userId: req.tokenData.authId },
     { __v: 0, updatedAt: 0, createdAt: 0, reach: 0 }
   ).sort({
     createdAt: -1,
-  });
+  });*/
+
+  const posts = await Post.aggregate([
+    {
+      $match: {
+        userId: { $in: user.following },
+      },
+    },
+    { $sort: { createdAt: -1, likes: -1 } },
+    // limit by no. of posts
+    // { $limit: 3 },
+    {
+      $group: {
+        _id: "$userId",
+        posts: {
+          $push: {
+            postId: "$_id",
+            caption: "$caption",
+            type: "$type",
+            images: "$images",
+            createdAt: "$createdAt",
+            // likes: "$likes",
+            likes: {
+              $cond: {
+                if: { $isArray: "$likes" },
+                then: { $size: "$likes" },
+                else: 0,
+              },
+            },
+            liked: {
+              $cond: {
+                if: { $in: [user.userId, "$likes"] },
+                then: true,
+                else: false,
+              },
+            },
+          },
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "_id",
+        foreignField: "userId",
+        as: "user",
+      },
+    },
+    {
+      $project: {
+        posts: 1,
+        username: {
+          $arrayElemAt: ["$user.username", 0],
+        },
+        photoUrl: {
+          $arrayElemAt: ["$user.photoUrl", 0],
+        },
+      },
+    },
+  ]);
+
   return res.status(200).json({
     status: SUCCESS,
     message: "Fetched posts",
@@ -62,4 +127,42 @@ module.exports.uploadPostImage = async (req, res) => {
     message: "Uploaded photo",
     url: "uploads/posts/" + req.file.filename,
   });
+};
+
+module.exports.likePost = async (req, res) => {
+  await Post.update(
+    { _id: req.body.postId },
+    { $addToSet: { likes: req.tokenData.authId } },
+    (err, updated) => {
+      if (err)
+        return res.status(403).json({
+          status: FAILED,
+          message: "failed to post like",
+        });
+      console.log(updated);
+      return res.status(200).json({
+        status: SUCCESS,
+        message: "Post liked successfully",
+      });
+    }
+  );
+};
+
+module.exports.dislikePost = async (req, res) => {
+  await Post.update(
+    { _id: req.body.postId },
+    { $pull: { likes: req.tokenData.authId } },
+    (err, updated) => {
+      if (err)
+        return res.status(403).json({
+          status: FAILED,
+          message: "failed to remove like",
+        });
+      console.log(updated);
+      return res.status(200).json({
+        status: SUCCESS,
+        message: "Post disliked successfully",
+      });
+    }
+  );
 };

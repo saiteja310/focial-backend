@@ -5,7 +5,13 @@ const {
   checkUserAccess,
 } = require("../middlewares/auth");
 const { internalServerError } = require("../utils/response");
-const { newPost, getMyPosts, uploadPostImage } = require("../controllers/post");
+const {
+  newPost,
+  getMyPosts,
+  uploadPostImage,
+  dislikePost,
+  likePost,
+} = require("../controllers/post");
 const path = require("path");
 const multer = require("multer");
 const ppStorage = multer.diskStorage({
@@ -64,6 +70,34 @@ router.post(
   async (req, res) => {
     try {
       await uploadPostImage(req, res);
+    } catch (error) {
+      internalServerError(res, error);
+    }
+  }
+);
+
+router.patch(
+  "/like",
+  checkAccessToken,
+  validateAccessToken,
+  checkUserAccess,
+  async (req, res) => {
+    try {
+      await likePost(req, res);
+    } catch (error) {
+      internalServerError(res, error);
+    }
+  }
+);
+
+router.patch(
+  "/dislike",
+  checkAccessToken,
+  validateAccessToken,
+  checkUserAccess,
+  async (req, res) => {
+    try {
+      await dislikePost(req, res);
     } catch (error) {
       internalServerError(res, error);
     }

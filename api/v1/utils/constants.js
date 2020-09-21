@@ -26,6 +26,9 @@ const SuccessMessages = Object.freeze({
 
 const errorMessages = Object.freeze({
   FAILED: "failed",
+  FAILED_TO_SEND_OTP: "Failed to send password reset code, please try later",
+  OTP_ALREADY_SENT:
+    "We've already sent an OTP to the registered email, please try resend endpoint to get a new OTP.",
   ACCESS_TOKEN_EXPIRED: "Access token expired",
   INVALID_AUTH_TYPE: "Unsupported type of authentication",
   INVALID_PASSWORD:
@@ -113,6 +116,7 @@ const collections = Object({
   USER_COLLECTION: "user",
   STORY_COLLECTION: "story",
   POST_COLLECTION: "post",
+  COMMENT_COLLECTION: "comment",
 });
 
 module.exports = Object.freeze({

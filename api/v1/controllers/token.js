@@ -35,7 +35,7 @@ module.exports.sendOTPForPasswordReset = async (userId, email) => {
 */
 module.exports.resendOTPForPasswordReset = async (userId, email) => {
   await _deleteOldToken(userId);
-  await this.sendOTPForPasswordReset(userId, email);
+  return await this.sendOTPForPasswordReset(userId, email);
 };
 
 /* Send account verification token 
