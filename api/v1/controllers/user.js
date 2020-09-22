@@ -248,3 +248,29 @@ module.exports.getSuggestions = async (req, res) => {
     suggestions: suggestions,
   });
 };
+
+module.exports.addToFollowersList = async (whomToFollow, whoWillFollow) => {
+  await User.updateOne(
+    { userId: whomToFollow },
+    { $addToSet: { followers: mongoose.Types.ObjectId(whoWillFollow) } },
+    followSaveErrorCB
+  );
+};
+
+module.exports.addToFollowingList = async (whoWillFollow, whomToFollow) => {
+  await User.updateOne(
+    { userId: whoWillFollow },
+    { $addToSet: { following: mongoose.Types.ObjectId(whomToFollow) } },
+    followSaveErrorCB
+  );
+};
+
+function followSaveErrorCB(err, saved) {
+  if (err) {
+    console.log(err);
+    return false;
+  }
+
+  console.log(saved);
+  return true;
+}

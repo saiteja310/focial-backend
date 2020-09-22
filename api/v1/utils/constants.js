@@ -1,5 +1,11 @@
 require("dotenv").config();
 
+const followRequest = Object.freeze({
+  PENDING: "Pending",
+  ACCEPTED: "Accepted",
+  REJECTED: "Rejected",
+});
+
 const SuccessMessages = Object.freeze({
   SUCCESS: "success",
   VERIFY_MAIL_SENT:
@@ -117,6 +123,7 @@ const collections = Object({
   STORY_COLLECTION: "story",
   POST_COLLECTION: "post",
   COMMENT_COLLECTION: "comment",
+  FOLLOW_REQUEST_COLLECTION: "follow_request",
 });
 
 module.exports = Object.freeze({
@@ -124,4 +131,5 @@ module.exports = Object.freeze({
   errors: errorMessages,
   successMessages: SuccessMessages,
   collections: collections,
+  followRequest: followRequest,
 });
