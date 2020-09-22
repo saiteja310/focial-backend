@@ -5,7 +5,7 @@ const {
   checkUserAccess,
 } = require("../middlewares/auth");
 const { internalServerError } = require("../utils/response");
-const { newComment } = require("../controllers/comment");
+const { newComment, getComments } = require("../controllers/comment");
 
 router.post(
   "/",
@@ -15,6 +15,20 @@ router.post(
   async (req, res) => {
     try {
       await newComment(req, res);
+    } catch (error) {
+      internalServerError(res, error);
+    }
+  }
+);
+
+router.get(
+  "/:id",
+  checkAccessToken,
+  validateAccessToken,
+  checkUserAccess,
+  async (req, res) => {
+    try {
+      await getComments(req, res);
     } catch (error) {
       internalServerError(res, error);
     }

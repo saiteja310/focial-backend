@@ -11,6 +11,7 @@ const userRoute = require("../api/v1/routes/user");
 const storyRoute = require("../api/v1/routes/story");
 const postRoute = require("../api/v1/routes/post");
 const commentRoute = require("../api/v1/routes/comment");
+const followRequestRoute = require("../api/v1/routes/follow_request");
 
 // importing admin routes
 const adminAuthRoute = require("../api/v1/routes/admin/auth");
@@ -70,6 +71,8 @@ function _setRoutes(app) {
   app.use("/api/v1/post", postRoute);
   // comment route
   app.use("/api/v1/comment", commentRoute);
+  // follow request route
+  app.use("/api/v1/fr", followRequestRoute);
 
   // admin routes
   // auth middleware
