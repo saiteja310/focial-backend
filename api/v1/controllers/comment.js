@@ -2,6 +2,8 @@ const Comment = require("../models/comment");
 const { SUCCESS } = require("../utils/constants").successMessages;
 const { FAILED } = require("../utils/constants").errors;
 const mongoose = require("mongoose");
+const { addCommentOnPost } = require("../controllers/notification");
+const { getAuthorIdOfPost } = require("../controllers/post");
 
 module.exports.newComment = async (req, res) => {
   const newComment = new Comment({
@@ -10,18 +12,21 @@ module.exports.newComment = async (req, res) => {
     postId: req.body.postId,
   });
 
-  await newComment.save((err, saved) => {
+  await newComment.save(async (err, saved) => {
     if (err)
       return res.status(403).json({
         status: FAILED,
         message: "Failed to post comment",
       });
 
-    return res.status(201).json({
+    res.status(201).json({
       status: SUCCESS,
       message: "Comment posted",
       comment: saved,
     });
+    const targetUser = await getAuthorIdOfPost(req.body.postId);
+    if (targetUser)
+      await addCommentOnPost(req.tokenData.authId, targetUser, req.body.postId);
   });
 };
 

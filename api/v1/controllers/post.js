@@ -2,6 +2,7 @@ const Post = require("../models/post");
 const { SUCCESS } = require("../utils/constants").successMessages;
 const { FAILED } = require("../utils/constants").errors;
 const { getFollowingList } = require("../controllers/user");
+const { addLikeOnPost } = require("../controllers/notification");
 
 module.exports.newPost = async (req, res) => {
   if (!req.body.caption)
@@ -133,17 +134,20 @@ module.exports.likePost = async (req, res) => {
   await Post.update(
     { _id: req.body.postId },
     { $addToSet: { likes: req.tokenData.authId } },
-    (err, updated) => {
+    async (err, updated) => {
       if (err)
         return res.status(403).json({
           status: FAILED,
           message: "failed to post like",
         });
       console.log(updated);
-      return res.status(200).json({
+      res.status(200).json({
         status: SUCCESS,
         message: "Post liked successfully",
       });
+      const authorId = await getAuthorIdOfPost(req.body.postId);
+      if (authorId)
+        await addLikeOnPost(req.tokenData.authId, authorId, req.body.postId);
     }
   );
 };
@@ -166,3 +170,11 @@ module.exports.dislikePost = async (req, res) => {
     }
   );
 };
+
+async function getAuthorIdOfPost(postId) {
+  const post = await Post.findById(postId, { userId: 1 });
+  if (!post) return false;
+  return post.userId;
+}
+
+module.exports.getAuthorIdOfPost = getAuthorIdOfPost;

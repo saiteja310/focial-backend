@@ -124,6 +124,7 @@ const collections = Object({
   POST_COLLECTION: "post",
   COMMENT_COLLECTION: "comment",
   FOLLOW_REQUEST_COLLECTION: "follow_request",
+  NOTIFICATION_COLLECTION: "notification",
 });
 
 module.exports = Object.freeze({
