@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { COMMENT_COLLECTION } = require("../utils/constants").collections;
+const { FOLLOW_REQUEST_COLLECTION } = require("../utils/constants").collections;
 const followRequest = require("../utils/constants").followRequest;
 
 const commentSchema = new mongoose.Schema(
@@ -21,4 +21,4 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model(COMMENT_COLLECTION, commentSchema);
+module.exports = mongoose.model(FOLLOW_REQUEST_COLLECTION, commentSchema);
