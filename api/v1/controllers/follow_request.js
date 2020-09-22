@@ -6,6 +6,10 @@ const {
   addToFollowersList,
   addToFollowingList,
 } = require("../controllers/user");
+const {
+  addFollowRequestAccepted,
+  addFollowRequest,
+} = require("../controllers/notification");
 
 module.exports.newFollowRequest = async (req, res) => {
   const fr = new FollowRequst({
@@ -13,18 +17,19 @@ module.exports.newFollowRequest = async (req, res) => {
     requestedBy: req.tokenData.authId,
   });
 
-  await fr.save((err, saved) => {
+  await fr.save(async (err, saved) => {
     if (err) {
       return res.status(403).json({
         status: FAILED,
         message: "Unable to send follow request, try again",
       });
     }
-    return res.status(201).json({
+    res.status(201).json({
       status: SUCCESS,
       message: "Follow request sent",
       requestId: saved._id,
     });
+    await addFollowRequest(req.tokenData.authId, req.body.userId);
   });
 };
 
@@ -64,7 +69,7 @@ module.exports.acceptFollowRequest = async (req, res) => {
       message: "Failed to accept follow request, please try later",
     });
 
-  await request.save((err, saved) => {
+  await request.save(async (err, saved) => {
     if (err)
       return res.status(403).json({
         status: FAILED,
@@ -72,10 +77,11 @@ module.exports.acceptFollowRequest = async (req, res) => {
       });
 
     console.log(saved);
-    return res.status(200).json({
+    res.status(200).json({
       status: SUCCESS,
       message: "Approved follow request",
     });
+    await addFollowRequestAccepted(req.tokenData.authId, request.requestedBy);
   });
 };
 
