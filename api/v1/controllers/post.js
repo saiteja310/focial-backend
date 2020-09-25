@@ -48,72 +48,35 @@ module.exports.getMyPosts = async (req, res) => {
   var user = await getFollowingList(req.tokenData.authId);
   // console.log(user.following);
   user.following.push(user.userId);
-  // user.following.push(mongoose.Types.ObjectId("5f6375994cd42e71f1903702"));
-  /* const posts = await Post.find(
-    { userId: req.tokenData.authId },
-    { __v: 0, updatedAt: 0, createdAt: 0, reach: 0 }
-  ).sort({
-    createdAt: -1,
-  });*/
 
-  const posts = await Post.aggregate([
+  const postsRaw = await Post.aggregate([
     {
-      $match: {
-        userId: { $in: user.following },
-      },
-    },
-    { $sort: { createdAt: -1, likes: -1 } },
-    // limit by no. of posts
-    // { $limit: 3 },
-    {
-      $group: {
-        _id: "$userId",
-        posts: {
-          $push: {
-            postId: "$_id",
-            caption: "$caption",
-            type: "$type",
-            images: "$images",
-            createdAt: "$createdAt",
-            // likes: "$likes",
-            likes: {
-              $cond: {
-                if: { $isArray: "$likes" },
-                then: { $size: "$likes" },
-                else: 0,
-              },
-            },
-            liked: {
-              $cond: {
-                if: { $in: [user.userId, "$likes"] },
-                then: true,
-                else: false,
-              },
-            },
-          },
-        },
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "_id",
-        foreignField: "userId",
-        as: "user",
-      },
+      $match: { userId: { $in: user.following } },
     },
     {
       $project: {
-        posts: 1,
-        username: {
-          $arrayElemAt: ["$user.username", 0],
+        likes: {
+          $size: "$likes",
         },
-        photoUrl: {
-          $arrayElemAt: ["$user.photoUrl", 0],
+        liked: {
+          $cond: {
+            if: { $in: [user.userId, "$likes"] },
+            then: true,
+            else: false,
+          },
         },
+        type: 1,
+        userId: 1,
+        caption: 1,
+        images: 1,
+        createdAt: 1,
       },
     },
   ]);
+  const posts = await Post.populate(postsRaw, {
+    path: "user",
+    select: { username: 1, photoUrl: 1, _id: 0 },
+  });
 
   return res.status(200).json({
     status: SUCCESS,
