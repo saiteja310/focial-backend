@@ -22,8 +22,6 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       // ref: USER_COLLECTION,
-      // refPath: "users",
-      // path: "userId",
     },
     // single text field for image, text and video posts
     caption: {
