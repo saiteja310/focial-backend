@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { schema } = require("./user");
 const {
   POST_COLLECTION,
   COMMENT_COLLECTION,
