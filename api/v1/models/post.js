@@ -1,5 +1,9 @@
 const mongoose = require("mongoose");
-const { POST_COLLECTION } = require("../utils/constants").collections;
+const {
+  POST_COLLECTION,
+  COMMENT_COLLECTION,
+  USER_COLLECTION,
+} = require("../utils/constants").collections;
 
 const postSchema = new mongoose.Schema(
   {
@@ -16,6 +20,7 @@ const postSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
+      // ref: USER_COLLECTION,
     },
     // single text field for image, text and video posts
     caption: {
@@ -34,8 +39,22 @@ const postSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
+    comments: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: COMMENT_COLLECTION,
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toObject: { virtuals: true },
+  }
 );
+
+postSchema.virtual("user", {
+  ref: USER_COLLECTION,
+  localField: "userId",
+  foreignField: "userId",
+  justOne: true, // for many-to-1 relationships
+});
 
 module.exports = mongoose.model(POST_COLLECTION, postSchema);
