@@ -1,0 +1,720 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Rest API Starter Explorer
+  description: A proposed openAPI explorer for Rest Api Starter Template
+servers:
+  - url: /api/v1
+    description: Development server
+tags:
+  - name: Auth
+    description: Authentication routes for End User
+  - name: Auth Common
+    description: Authentication routes common for End user and Admin
+  - name: Admin Auth
+    description: Authentication routes for Admin 
+  - name: User
+    description: Routes related to User Metadata
+  - name: Comment
+    description: Routes related to Comments
+  - name: Post
+    description: Routes related to Posts
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Creates a new User
+      description: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: Password@123
+                name:
+                  type: string
+                  example: example
+              required:
+                - email
+                - name
+      responses:
+        '201':
+          description: User Created successfully.
+        '400':
+          description: Unable to create user.
+        '500':
+          description: Internal Server Error
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login a user
+      description: Login a user using email and password.
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: Password@123
+              required:
+                - email
+      responses:
+        '200':
+          description: Logged In Successfully.
+        '400':
+          description: Unable to Login.
+        '500':
+          description: Internal Server Error
+  /auth/token/verify:
+    get:
+      tags:
+        - Auth Common
+      summary: Verifies a given token for a new user
+      description: Verifies a token for a new user
+      
+      parameters:
+        - in: query
+          name: t
+          schema:
+            type: string
+          description: Access token
+      responses:
+        '200':
+          description: Token Verified successfully.
+        '400':
+          description: Failed to verify the token.
+        '500':
+          description: Internal Server Error
+  /auth/token/resend:
+    post:
+      tags:
+        - Auth Common
+      summary: Resend Token
+      description: Resend Token for a new user
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: Password@123
+              required:
+                - email
+      responses:
+        '200':
+          description: Token Resent Successfully.
+        '400':
+          description: Unable to Resend token.
+        '401':
+          description: Incorrect Password.
+        '500':
+          description: Internal Server Error
+  /auth/password:
+    patch:
+      tags:
+        - Auth Common
+      summary: Change Password
+      description: Change password using old password
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                  example: Password@123
+                newPassword:
+                  type: string
+                  example: Password@124
+              required:
+                - email
+      responses:
+        '200':
+          description: Password Changed Successfully.
+        '400':
+          description: Bad Request.
+        '403':
+          description: Password Change Failed Try Again later
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /auth/password/reset/code/resend:
+    post:
+      tags:
+        - Auth Common
+      summary: Regenerate code to reset password
+      description: Regenerate OTP to reset password
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+              required:
+                - email
+      responses:
+        '200':
+          description: OTP Sent successfully to your email.
+        '400':
+          description: Failed, User doesn't exist.
+        '500':
+          description: Internal Server Error
+  /auth/password/reset/code:
+    post:
+      tags:
+        - Auth Common
+      summary: Generate code to reset password
+      description: Generate OTP to reset password
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+              required:
+                - email
+      responses:
+        '200':
+          description: OTP Sent successfully to your email.
+        '400':
+          description: Failed, User doesn't exist.
+        '500':
+          description: Internal Server Error
+  /auth/password/reset:
+    post:
+      tags:
+        - Auth Common
+      summary: Reset password using OTP
+      description: Reset password of a user using OTP.
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: password@123
+                otp:
+                  type: integer
+              required:
+                - email
+                - password
+                - otp
+      responses:
+        '200':
+          description: Password Reset successfully.
+        '400':
+          description: Failed, Check the error message for details.
+        '500':
+          description: Internal Server Error
+  /auth:
+    delete:
+      tags:
+        - Auth Common
+      summary: Delete a user permanently
+      description: Deletes a user permanently.
+      
+      responses:
+        '200':
+          description: Deleted Successfully.
+        '400':
+          description: Bad Request.
+        '403':
+          description: Failed to delete user
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /admin/auth/register:
+    post:
+      tags:
+        - Admin Auth
+      summary: Creates a new Admin account
+      description: Creates a new Admin account
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: Password@123
+                name:
+                  type: string
+                  example: example
+              required:
+                - email
+                - name
+      responses:
+        '201':
+          description: Admin user Created successfully.
+        '400':
+          description: Unable to create Admin user.
+        '500':
+          description: Internal Server Error
+  /admin/auth/login:
+    post:
+      tags:
+        - Admin Auth
+      summary: Login as an Admin
+      description: Login as an admin using email and password.
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@email.com
+                password:
+                  type: string
+                  example: Password@123
+              required:
+                - email
+      responses:
+        '200':
+          description: Logged In Successfully.
+        '400':
+          description: Unable to Login.
+        '500':
+          description: Internal Server Error
+  /admin/auth/users:
+    get:
+      tags:
+        - Admin Auth
+      summary: Get a list of all the users
+      description: Get a list of all the users registered in this app.
+      
+      responses:
+        '200':
+          description: Users Fetched successfully.
+        '403':
+          description: Failed, Forbidden to fetch user
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /admin/auth/admins:
+    get:
+      tags:
+        - Admin Auth
+      summary: Get a list of all the admins.
+      description: Get a list of all the admins registered in the app.
+      
+      responses:
+        '200':
+          description: Admins Fetched successfully.
+        '403':
+          description: Failed, Forbidden to fetch admins.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /admin/auth/user/enable:
+    patch:
+      tags:
+        - Admin Auth
+      summary: Enable access of an end user account.
+      description: Enable access of an end user account by using an Admin User.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: 5f7bfb50b6bb820cf045ca2f
+              required:
+                - userId
+      responses:
+        '200':
+          description: Account enabled successfully.
+        '403':
+          description: Failed to enable/disable user access.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /admin/auth/user/disable:
+    patch:
+      tags:
+        - Admin Auth
+      summary: Disable access of an end user account.
+      description: Disable access of an end user account by using an Admin User.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  example: 5f7bfb50b6bb820cf045ca2f
+              required:
+                - userId
+      responses:
+        '200':
+          description: Account disabled successfully.
+        '403':
+          description: Failed to enable/disable user access.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get all the details of a user
+      description: Get a list of all the details of a user by providing access token.
+      
+      responses:
+        '200':
+          description: User Data Fetched successfully.
+        '403':
+          description: Failed, Forbidden to fetch user data.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+    patch:
+      tags:
+        - User
+      summary: Edit User Details
+      description: Edit data related to the user.
+      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                  example: Shubham
+                lastName:
+                  type: string
+                  example: Raj
+                gender:
+                  type: string
+                  example: Male
+                age:
+                  type: integer
+                  example: 20
+              required:
+                - firstName
+      responses:
+        '200':
+          description: User Data Fetched successfully.
+        '403':
+          description: Failed, Forbidden to fetch user data.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /comment:
+    post:
+      tags:
+        - Comment
+      summary: Creates a new Comment against a Post
+      description: Creates a new Comment with User Id from token and Posts against the Post Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                comment:
+                  type: string
+                  example: "Awesome!"
+                postId:
+                  type: string
+                  example: 5f7c179c6a9b793b44b1cb72
+              required:
+                - comment
+                - postId
+      responses:
+        '201':
+          description: Comment posted successfully.
+        '403':
+          description: Unable to create comment.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /comment/{id}:
+    get:
+      tags:
+        - Comment
+      summary: Gets all Comments & their metadata against a Post
+      description: Gets all Comments & their metadata against a Post
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            example: 5f7c179c6a9b793b44b1cb72
+          required: true
+          description: Numeric ID of the Post
+      responses:
+        '200':
+          description: Retreived all the comments against a post successfully.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /post:
+    post:
+      tags:
+        - Post
+      summary: Creates a new Post 
+      description: Creates a new Post for Current User with or without images
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                caption:
+                  type: string
+                  example: "Awesome Caption!"
+                images:
+                  type: string
+                  format: binary
+              required:
+                - caption
+      responses:
+        '200':
+          description: Post created successfully.
+        '400':
+          description: Failed Validation.[Empty Caption]
+        '403':
+          description: Unable to create Post.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+    get:
+      tags:
+        - Post
+      summary: Gets Posts of all followed users
+      description: Gets Posts of all followed users
+      responses:
+        '200':
+          description: Fetched post successfully.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /post/image:
+    post:
+      tags:
+        - Post
+      summary: Uploads an image to server ( Need to confirm on the usage )
+      description: Uploads an image to server
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+              required:
+                - file
+      responses:
+        '200':
+          description: Image uploaded successfully.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /post/like:
+    patch:
+      tags:
+        - Post
+      summary: Likes the given Post Id
+      description: Likes the given Post Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                postId:
+                  type: string
+                  example: 5f7c179c6a9b793b44b1cb72
+              required:
+                - postId
+      responses:
+        '200':
+          description: Posted Like successfully.
+        '403':
+          description: Failed to post Like.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+  /post/dislike:
+    patch:
+      tags:
+        - Post
+      summary: Dislike the given Post Id
+      description: Dislike the given Post Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                postId:
+                  type: string
+                  example: 5f7c179c6a9b793b44b1cb72
+              required:
+                - postId
+      responses:
+        '200':
+          description: Posted Dislike successfully.
+        '403':
+          description: Failed to post Dislike.
+        '500':
+          description: Internal Server Error
+      security:
+        - bearerAuth: []
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName: 
+          type: string
+        gender: 
+          type: string
+        age: 
+          type: integer
+        knownLanguages:
+          type: string
+        profession: 
+          type: string
+        location: 
+          type: string
+        latitude: 
+          type: integer
+        longitude: 
+          type: integer
+        photoUrl: 
+          type: string
+        symptoms:
+          type: string
+      required:
+      - userId
+      - email
+    Auth:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        admin: 
+          type: boolean
+        adminVerified: 
+          type: boolean
+        disabled: 
+          type: boolean
+        emailVerified:
+          type: boolean
+        provider: 
+          type: boolean
+        oauthToken: 
+          type: string
+      required:
+      - email
+    Token:
+      type: object
+      properties:
+        _userId:
+          type: string
+        token:
+          type: string
+        createdAt: 
+          type: string
+          format: date-time
+      required:
+      - _userId
+      - token
+      - createdAt

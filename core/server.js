@@ -4,6 +4,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 
 // importing user routes
 const authRoute = require("../api/v1/routes/auth");
@@ -16,6 +18,9 @@ const imagesRoute = require("../api/v1/routes/image");
 
 // importing admin routes
 const adminAuthRoute = require("../api/v1/routes/admin/auth");
+
+// swagger doc load
+const swaggerDocument = YAML.load("./swagger.yaml");
 
 const {
   MAX_REQ_BODY_SIZE,
@@ -56,6 +61,10 @@ function _configureServer(app) {
     }
     next();
   });
+
+  
+  // Setting up Swagger
+  app.use("/api/v1/explorer", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   _setRoutes(app);
 }
