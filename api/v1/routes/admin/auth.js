@@ -5,6 +5,7 @@ const {
   checkAccessToken,
   validateAccessToken,
   checkAdminAccess,
+  validateLoginFields
 } = require("../../middlewares/auth");
 const {
   registerWithEmail,
@@ -39,7 +40,7 @@ router.post(
 */
 router.post(
   "/login",
-  validateRegisterFields,
+  validateLoginFields,
   validPassword,
   async (req, res) => {
     try {
