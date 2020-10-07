@@ -1,8 +1,8 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Rest API Starter Explorer
-  description: A proposed openAPI explorer for Rest Api Starter Template
+  title: Focial
+  description: REST API for focial application
 servers:
   - url: /api/v1
     description: Development server
