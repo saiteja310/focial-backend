@@ -612,7 +612,7 @@ module.exports.loginWithGoogle = async (req, res) => {
 async function _disableOrEnableUser(req, res, disable) {
   var authUser = await getAuthUserById(req.body.userId);
   if (!authUser)
-    return res.status(403).json({
+    return res.status(400).json({
       status: FAILED,
       message: USER_NOT_EXISTS,
     });

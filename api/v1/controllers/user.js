@@ -85,7 +85,7 @@ module.exports.getUser = async (req, res) => {
   ])
     .then((document) => {
       if (!document) {
-        return res.status(403).json({
+        return res.status(400).json({
           status: FAILED,
           message: USER_NOT_EXISTS,
         });
@@ -98,7 +98,7 @@ module.exports.getUser = async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      return res.status(403).json({
+      return res.status(400).json({
         status: FAILED,
         message: USER_NOT_EXISTS,
       });
